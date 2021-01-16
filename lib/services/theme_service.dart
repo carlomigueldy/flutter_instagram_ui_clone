@@ -74,9 +74,8 @@ class ThemeService with ReactiveServiceMixin {
         elevation: 0,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.red,
-        elevation: 5,
-      ),
+          // backgroundColor: Colors.red,
+          ),
     );
   }
 }

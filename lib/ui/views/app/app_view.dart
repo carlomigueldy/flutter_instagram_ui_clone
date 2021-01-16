@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_instagram_ui_clone/ui/views/app/add_photo/add_photo_view.dart';
+import 'package:flutter_instagram_ui_clone/ui/views/app/likes/likes_view.dart';
+import 'package:flutter_instagram_ui_clone/ui/views/app/profile/profile_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacked/stacked.dart';
 
 // ViewModel
-import '../../../models/user.dart';
-import 'app_viewmodel.dart' show AppViewModel, MenuType;
+import 'app_viewmodel.dart' show AppViewModel;
+import 'explore/explore_view.dart';
+import 'home/home_view.dart';
 
 class AppView extends StatelessWidget {
   @override
@@ -30,16 +34,7 @@ class AppView extends StatelessWidget {
             ),
             bottomNavigationBar: AppBottomNavigationBar(model: model),
             body: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  homeViewStories(model: model),
-                  Divider(
-                    height: 0,
-                  ),
-                  for (int index = 0; index < 10; index++) FeedItem(),
-                ],
-              ),
+              child: getViewByIndex(index: model.currentIndex),
             ),
           ),
         );
@@ -47,204 +42,21 @@ class AppView extends StatelessWidget {
     );
   }
 
-  Container homeViewStories({@required AppViewModel model}) {
-    return Container(
-      height: 80,
-      // color: Colors.blue,
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: model.users.length,
-        itemBuilder: (context, index) {
-          bool isFirst = index == 0;
-          bool isLast = (model.users.length - 1) == index;
-          User user = model.users[index];
-
-          return Stack(
-            children: [
-              Positioned(
-                child: Container(
-                  margin: isFirst
-                      ? const EdgeInsets.only(left: 10)
-                      : isLast
-                          ? const EdgeInsets.only(right: 10)
-                          : null,
-                  height: 70,
-                  width: 70,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    shape: BoxShape.circle,
-                  ),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(user.photoUrl),
-                  ),
-                ),
-              ),
-              if (isFirst)
-                Positioned(
-                  bottom: 0,
-                  right: 5,
-                  child: Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                )
-              // else
-              //   Container(
-              //     height: 70,
-              //     width: 70,
-              //     decoration: BoxDecoration(
-              //       color: Colors.red,
-              //       shape: BoxShape.circle,
-              //     ),
-              //   )
-            ],
-          );
-        },
-        separatorBuilder: (context, index) => SizedBox(width: 5),
-      ),
-    );
-  }
-}
-
-class FeedItem extends StatelessWidget {
-  const FeedItem({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      // color: Colors.grey[200],
-      height: 600,
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(backgroundColor: Colors.grey[300]),
-                    SizedBox(width: 10),
-                    Text('Name')
-                  ],
-                ),
-                Icon(Icons.more_vert)
-              ],
-            ),
-          ),
-          Container(
-            height: 350,
-            color: Colors.grey[300],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    FaIcon(FontAwesomeIcons.heart),
-                    SizedBox(width: 15),
-                    FaIcon(FontAwesomeIcons.comment),
-                    SizedBox(width: 15),
-                    FaIcon(FontAwesomeIcons.paperPlane),
-                  ],
-                ),
-                FaIcon(FontAwesomeIcons.bookmark),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      '20,594 likes',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'username',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Flexible(
-                      child: Text(
-                        'cool description cool description cool description cool description',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'View all 2,539 comments',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-                feedItemComment(
-                    user: 'username_1', comment: 'comment awesome coment 123'),
-                feedItemComment(
-                    user: 'username_1', comment: 'comment awesome coment 123'),
-                feedItemComment(
-                    user: 'username_1', comment: 'comment awesome coment 123'),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget feedItemComment({@required String user, @required String comment}) {
-    return Row(
-      children: [
-        Text(
-          user,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(width: 10),
-        Row(
-          children: [
-            Text(comment),
-            // FaIcon(
-            //   FontAwesomeIcons.heart,
-            //   size: 12,
-            // ),
-          ],
-        ),
-      ],
-    );
+  Widget getViewByIndex({@required int index}) {
+    switch (index) {
+      case 0:
+        return HomeView();
+      case 1:
+        return ExploreView();
+      case 2:
+        return AddPhotoView();
+      case 3:
+        return LikesView();
+      case 4:
+        return ProfileView();
+      default:
+        return HomeView();
+    }
   }
 }
 
@@ -281,19 +93,24 @@ class AppBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      unselectedItemColor: Colors.black,
-      backgroundColor: Colors.black,
-      fixedColor: Colors.black,
+      type: BottomNavigationBarType.fixed,
+      unselectedItemColor: Colors.grey[800],
+      selectedItemColor: Colors.black,
       showSelectedLabels: false,
       showUnselectedLabels: false,
-      currentIndex: 2,
+      currentIndex: model.currentIndex,
+      onTap: (int index) => model.setTabIndex(index: index),
       items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home_outlined),
+          icon: model.currentIndex == 0
+              ? Icon(Icons.home)
+              : Icon(Icons.home_outlined),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search_outlined),
+          icon: model.currentIndex == 1
+              ? Icon(Icons.search)
+              : Icon(Icons.search_outlined),
           label: 'Explore',
         ),
         BottomNavigationBarItem(
@@ -301,13 +118,20 @@ class AppBottomNavigationBar extends StatelessWidget {
           label: 'Add Photo',
         ),
         BottomNavigationBarItem(
-          icon: FaIcon(FontAwesomeIcons.heart),
+          icon: model.currentIndex == 3
+              ? FaIcon(FontAwesomeIcons.solidHeart)
+              : FaIcon(FontAwesomeIcons.heart),
           label: 'Likes',
         ),
         BottomNavigationBarItem(
           icon: CircleAvatar(
-            backgroundColor: Colors.grey[300],
-            radius: 14,
+            backgroundColor:
+                model.currentIndex == 4 ? Colors.black : Colors.grey[300],
+            radius: 15,
+            child: CircleAvatar(
+              backgroundImage: AssetImage('assets/logos/instagram-icon.png'),
+              radius: 13,
+            ),
           ),
           label: 'Profile',
         ),
