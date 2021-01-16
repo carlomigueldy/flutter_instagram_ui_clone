@@ -16,7 +16,7 @@ class UserService with ReactiveServiceMixin {
   UserService() {
     listenToReactiveValues([_user, _users]);
 
-    _users.value = generateFakeUsers(quantity: 5);
+    _users.value = generateFakeUsers(quantity: 8);
   }
 
   Future<List<User>> all() async {
