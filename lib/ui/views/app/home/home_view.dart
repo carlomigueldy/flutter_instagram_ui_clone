@@ -107,9 +107,13 @@ class FeedItem extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    CircleAvatar(backgroundColor: Colors.grey[300]),
+                    CircleAvatar(
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage: NetworkImage(
+                          'https://media1.s-nbcnews.com/j/newscms/2020_42/3419312/201012-gal-gadot-mc-1221_212dac7f3c5f52bf68273830d965ed84.fit-760w.JPG'),
+                    ),
                     SizedBox(width: 10),
-                    Text('Name')
+                    Text('Gal Gadot')
                   ],
                 ),
                 Icon(Icons.more_vert)
@@ -118,7 +122,14 @@ class FeedItem extends StatelessWidget {
           ),
           Container(
             height: 350,
-            color: Colors.grey[300],
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                    'https://media1.s-nbcnews.com/j/newscms/2020_42/3419312/201012-gal-gadot-mc-1221_212dac7f3c5f52bf68273830d965ed84.fit-760w.JPG'),
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

@@ -13,10 +13,8 @@ class ExploreView extends StatelessWidget {
         ExploreViewModel model,
         Widget child,
       ) {
-        return Center(
-          child: Text(
-            'ExploreView',
-          ),
+        return Text(
+          'ExploreView',
         );
       },
     );

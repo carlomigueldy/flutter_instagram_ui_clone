@@ -23,7 +23,7 @@ class UserService with ReactiveServiceMixin {
     return _users.value;
   }
 
-  Future<User> findById({int userId}) async {
+  Future<User> findById({String userId}) async {
     return _users.value.firstWhere((element) => element.userId == userId);
   }
 }
